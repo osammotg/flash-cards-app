@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { StackProvider, StackTheme } from "@stackframe/stack";
+import { stackServerApp } from "../stack/server";
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
@@ -20,14 +22,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={inter.className}><StackProvider app={stackServerApp}><StackTheme>
         <ConvexErrorBoundary>
           <ConvexClientProvider>
             {children}
             <Toaster />
           </ConvexClientProvider>
         </ConvexErrorBoundary>
-      </body>
+      </StackTheme></StackProvider></body>
     </html>
   )
 }
