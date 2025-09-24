@@ -1,5 +1,6 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { StackServerApp } from "@stackframe/stack";
 
 // Get all decks for a team
 export const getTeamDecks = query({

@@ -2,6 +2,7 @@
 
 import { useUser } from '@stackframe/stack';
 import { TeamDeckManager } from '@/components/TeamDeckManager';
+import { TeamPreviewManager } from '@/components/TeamPreviewManager';
 import { Header } from '@/components/Header';
 import { useParams } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
@@ -27,10 +28,18 @@ export default function TeamPage() {
     );
   }
 
+  // Check if user is a member of this team
+  const team = user.useTeam(teamId);
+  const isTeamMember = team !== null;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <Header />
-      <TeamDeckManager teamId={teamId} />
+      {isTeamMember ? (
+        <TeamDeckManager teamId={teamId} />
+      ) : (
+        <TeamPreviewManager teamId={teamId} />
+      )}
     </div>
   );
 }

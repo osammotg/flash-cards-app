@@ -1,24 +1,58 @@
 'use client';
 
-import { useQuery, useMutation } from 'convex/react';
-import { api } from '../../convex/_generated/api';
 import { useUser } from '@stackframe/stack';
+import { useState, useEffect } from 'react';
 import { DeckCard } from '@/components/DeckCard';
-import { CreateTeamForm } from '@/components/CreateTeamForm';
+import { CreateTeamDeckForm } from '@/components/CreateTeamDeckForm';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Users, BookOpen, Loader2, LogOut, Plus, TrendingUp, Clock, Star } from 'lucide-react';
-import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 export function TeamDeckManager({ teamId }: { teamId: string }) {
   const user = useUser({ or: 'redirect' });
   const team = user.useTeam(teamId);
-  const teamDecks = useQuery(api.teamDecks.getTeamDecks, { teamId });
-  const teamCardCounts = useQuery(api.teamDecks.getTeamCardCounts, { teamId });
+  const [teamDecks, setTeamDecks] = useState<any[]>([]);
+  const [teamCardCounts, setTeamCardCounts] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
   const [leavingTeam, setLeavingTeam] = useState(false);
   const { toast } = useToast();
+
+  // Fetch team data securely
+  useEffect(() => {
+    const fetchTeamData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/teams/${teamId}/decks`);
+        
+        if (response.status === 403) {
+          // User is not a team member - redirect to preview
+          window.location.reload();
+          return;
+        }
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch team data');
+        }
+        
+        const data = await response.json();
+        setTeamDecks(data.decks || []);
+        setTeamCardCounts(data.cardCounts || {});
+      } catch (error) {
+        console.error('Failed to fetch team data:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load team data',
+          variant: 'destructive',
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeamData();
+  }, [teamId, toast]);
 
   const handleLeaveTeam = async () => {
     if (!confirm('Are you sure you want to leave this team? You will lose access to all team decks and cards.')) {
@@ -77,7 +111,7 @@ export function TeamDeckManager({ teamId }: { teamId: string }) {
     );
   }
 
-  if (teamDecks === undefined) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
         <Loader2 className="h-8 w-8 animate-spin" />
@@ -110,9 +144,9 @@ export function TeamDeckManager({ teamId }: { teamId: string }) {
                   Collaborate on flashcards with your team. Share knowledge, study together, and achieve your learning goals.
                 </p>
               </div>
-              <div className="hidden lg:flex items-center gap-3">
-                <CreateTeamForm variant="team" />
-                <Button
+                  <div className="hidden lg:flex items-center gap-3">
+                    <CreateTeamDeckForm teamId={teamId} />
+                    <Button
                   variant="outline"
                   onClick={handleLeaveTeam}
                   disabled={leavingTeam}
@@ -191,9 +225,9 @@ export function TeamDeckManager({ teamId }: { teamId: string }) {
               <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Team Decks</h2>
               <p className="text-muted-foreground">Collaborative flashcard decks for your team</p>
             </div>
-            <div className="flex items-center gap-3">
-              <CreateTeamForm variant="team" />
-              <Button
+                <div className="flex items-center gap-3">
+                  <CreateTeamDeckForm teamId={teamId} />
+                  <Button
                 variant="outline"
                 onClick={handleLeaveTeam}
                 disabled={leavingTeam}
@@ -227,7 +261,7 @@ export function TeamDeckManager({ teamId }: { teamId: string }) {
                 <p className="text-muted-foreground mb-8 max-w-md mx-auto">
                   Start collaborating by creating the first deck for your team! Share knowledge and study together.
                 </p>
-                <CreateTeamForm variant="team" />
+                <CreateTeamDeckForm teamId={teamId} />
               </CardContent>
             </Card>
           ) : (
