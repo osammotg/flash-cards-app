@@ -16,9 +16,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useDecks } from '@/hooks/use-decks';
 import { useCards } from '@/hooks/use-cards';
+import { useDeckCardCounts } from '@/hooks/use-deck-card-counts';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, BookOpen } from 'lucide-react';
 import { Deck } from '@/lib/types';
+import { FullScreenLoader } from '@/components/Loader';
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,12 +33,13 @@ export default function HomePage() {
 
   const router = useRouter();
   const { decks, loading, createDeck, updateDeck, removeDeck } = useDecks();
+  const { cardCounts, loading: countsLoading } = useDeckCardCounts();
   const { toast } = useToast();
 
   // Get card counts for each deck
   const deckWithCounts = decks.map(deck => ({
     ...deck,
-    cardCount: 0, // Will be updated by useCards hook
+    cardCount: cardCounts[deck._id] || 0,
   }));
 
   const filteredDecks = deckWithCounts.filter(deck =>
@@ -117,6 +120,11 @@ export default function HomePage() {
     setEditTitle(deck.title);
     setEditDescription(deck.description || '');
   };
+
+  // Show full screen loader when data is loading
+  if (loading || countsLoading) {
+    return <FullScreenLoader />;
+  }
 
   return (
     <div className="min-h-screen bg-background">

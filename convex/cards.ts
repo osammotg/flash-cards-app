@@ -90,3 +90,20 @@ export const searchCards = query({
     );
   },
 });
+
+// Get card counts for all decks
+export const getCardCountsByDeck = query({
+  args: {},
+  handler: async (ctx) => {
+    const cards = await ctx.db.query("cards").collect();
+    
+    // Group cards by deckId and count them
+    const counts: Record<string, number> = {};
+    for (const card of cards) {
+      const deckId = card.deckId;
+      counts[deckId] = (counts[deckId] || 0) + 1;
+    }
+    
+    return counts;
+  },
+});

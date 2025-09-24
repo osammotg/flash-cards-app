@@ -3,7 +3,7 @@ import { api } from '../../convex/_generated/api';
 import { Id } from '../../convex/_generated/dataModel';
 
 export function useCards(deckId: string) {
-  const cards = useQuery(api.cards.getCardsByDeck, { deckId: deckId as Id<"decks"> }) || [];
+  const cards = useQuery(api.cards.getCardsByDeck, { deckId: deckId as Id<"decks"> });
   const createCardMutation = useMutation(api.cards.createCard);
   const updateCardMutation = useMutation(api.cards.updateCard);
   const removeCardMutation = useMutation(api.cards.deleteCard);
@@ -39,7 +39,7 @@ export function useCards(deckId: string) {
     try {
       // For now, we'll do client-side filtering since Convex search is more complex
       const lowercaseQuery = query.toLowerCase();
-      return cards.filter(card => 
+      return (cards || []).filter(card => 
         card.front.toLowerCase().includes(lowercaseQuery) ||
         card.back.toLowerCase().includes(lowercaseQuery) ||
         card.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery))
@@ -50,7 +50,7 @@ export function useCards(deckId: string) {
   };
 
   return {
-    cards,
+    cards: cards || [],
     loading: cards === undefined,
     error: null,
     createCard,

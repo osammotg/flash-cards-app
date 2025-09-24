@@ -15,6 +15,7 @@ import { useDecks } from '@/hooks/use-decks';
 import { useStudyQueue } from '@/hooks/use-study-queue';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, RotateCcw, BookOpen } from 'lucide-react';
+import { FullScreenLoader } from '@/components/Loader';
 
 export default function StudyPage() {
   const params = useParams();
@@ -75,17 +76,7 @@ export default function StudyPage() {
   }
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="mobile-content container mx-auto px-4 py-6 pb-20 sm:pb-6">
-          <div className="flex items-center justify-center h-96">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          </div>
-        </main>
-        <BottomNav />
-      </div>
-    );
+    return <FullScreenLoader />;
   }
 
   if (total === 0) {

@@ -3,10 +3,11 @@ import { api } from '../../convex/_generated/api';
 import { Id } from '../../convex/_generated/dataModel';
 
 export function useDecks() {
-  const decks = useQuery(api.decks.getDecks) || [];
+  const decks = useQuery(api.decks.getDecks);
   const createDeckMutation = useMutation(api.decks.createDeck);
   const updateDeckMutation = useMutation(api.decks.updateDeck);
   const removeDeckMutation = useMutation(api.decks.deleteDeck);
+
 
   const createDeck = async (data: { title: string; description?: string }) => {
     try {
@@ -35,7 +36,7 @@ export function useDecks() {
   };
 
   return {
-    decks,
+    decks: decks || [],
     loading: decks === undefined,
     error: null,
     createDeck,

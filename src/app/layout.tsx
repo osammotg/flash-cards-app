@@ -4,6 +4,7 @@ import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
 import { ConvexProvider } from 'convex/react'
 import { ConvexClientProvider } from '@/components/ConvexClientProvider'
+import { ConvexErrorBoundary } from '@/components/ConvexErrorBoundary'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,10 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ConvexClientProvider>
-          {children}
-          <Toaster />
-        </ConvexClientProvider>
+        <ConvexErrorBoundary>
+          <ConvexClientProvider>
+            {children}
+            <Toaster />
+          </ConvexClientProvider>
+        </ConvexErrorBoundary>
       </body>
     </html>
   )

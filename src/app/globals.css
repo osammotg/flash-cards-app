@@ -142,3 +142,41 @@
     transform: translateY(0);
   }
 }
+
+/* Loader animations */
+@keyframes gradient-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Enhanced loader styles */
+.loader-gradient {
+  background: conic-gradient(
+    from 0deg,
+    #3b82f6 0deg,
+    #8b5cf6 90deg,
+    #ec4899 180deg,
+    #10b981 270deg,
+    #3b82f6 360deg
+  );
+  animation: gradient-rotate 2s linear infinite;
+}
+
+.loader-pulse {
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}

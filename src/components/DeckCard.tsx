@@ -68,9 +68,9 @@ export function DeckCard({ deck, cardCount, onEdit, onDelete }: DeckCardProps) {
       
       <CardFooter className="pt-0">
         <Button asChild className="w-full">
-          <Link href={`/study/${deck._id}`}>
+          <Link href={`/deck/${deck._id}`}>
             <BookOpen className="mr-2 h-4 w-4" />
-            Study
+            View Cards
           </Link>
         </Button>
       </CardFooter>

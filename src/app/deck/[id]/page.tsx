@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
-export const dynamic = 'force-dynamic';
 import { useParams, useRouter } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/BottomNav';
@@ -19,6 +17,7 @@ import { useCards } from '@/hooks/use-cards';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Plus, Edit, Trash2, BookOpen, Search, Tag } from 'lucide-react';
 import { Card as CardType } from '@/lib/types';
+import { FullScreenLoader, InlineLoader } from '@/components/Loader';
 
 export default function DeckPage() {
   const params = useParams();
@@ -36,7 +35,7 @@ export default function DeckPage() {
   const [editCardBack, setEditCardBack] = useState('');
   const [editCardTags, setEditCardTags] = useState('');
 
-  const { decks, updateDeck, removeDeck } = useDecks();
+  const { decks, loading: decksLoading, updateDeck, removeDeck } = useDecks();
   const { cards, loading, createCard, updateCard, removeCard, searchCards } = useCards(deckId);
   const { toast } = useToast();
 
@@ -47,9 +46,14 @@ export default function DeckPage() {
     if (searchQuery.trim()) {
       searchCards(searchQuery).then(setFilteredCards);
     } else {
-      setFilteredCards(cards);
+      setFilteredCards(cards || []);
     }
-  }, [searchQuery, cards, searchCards]);
+  }, [searchQuery, cards]);
+
+  // Show full screen loader when data is loading
+  if (loading || decksLoading) {
+    return <FullScreenLoader />;
+  }
 
   if (!deck) {
     return (
@@ -448,3 +452,5 @@ export default function DeckPage() {
     </div>
   );
 }
+
+export const dynamic = 'force-dynamic';
