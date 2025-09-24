@@ -15,22 +15,18 @@ export default function PublicTeamsPage() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <Link href="/">
-              <Button variant="outline" size="sm">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Home
+              <Button variant="ghost" size="icon" className="h-10 w-10">
+                <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
             <div>
-              <h1 className="text-3xl font-bold flex items-center gap-2">
-                <Users className="h-8 w-8" />
-                Public Teams
+              <h1 className="text-2xl font-semibold flex items-center gap-2">
+                <Users className="h-6 w-6" />
+                Teams
               </h1>
-              <p className="text-muted-foreground">
-                Join existing teams or create your own to collaborate on flashcards
-              </p>
             </div>
           </div>
           {user && <CreateTeamForm />}
@@ -38,27 +34,20 @@ export default function PublicTeamsPage() {
 
         {/* Welcome Card for Non-Authenticated Users */}
         {!user && (
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BookOpen className="h-5 w-5" />
-                Join the Community
-              </CardTitle>
-              <CardDescription>
-                Sign in to join teams and start collaborating on flashcards with others
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex gap-2">
+          <div className="mb-8 text-center">
+            <div className="space-y-4">
+              <h2 className="text-lg font-medium">Join Teams</h2>
+              <p className="text-muted-foreground">Sign in to collaborate</p>
+              <div className="flex gap-3 justify-center">
                 <Button asChild>
                   <Link href="/handler/sign-in">Sign In</Link>
                 </Button>
-                <Button variant="outline" asChild>
+                <Button variant="ghost" asChild>
                   <Link href="/handler/sign-up">Sign Up</Link>
                 </Button>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         )}
 
         {/* Teams Browser */}

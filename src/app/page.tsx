@@ -134,96 +134,76 @@ export default function HomePage() {
       
       <main className="mobile-content container mx-auto px-4 py-6 pb-20 sm:pb-6">
         {!user ? (
-          // Modern minimalistic welcome screen
+          // Minimalistic Apple-style welcome screen
           <div className="min-h-[80vh] flex items-center justify-center">
-            <div className="max-w-md mx-auto text-center space-y-8">
-              {/* Blossom Logo */}
+            <div className="max-w-sm mx-auto text-center space-y-12">
+              {/* Minimal Logo */}
               <div className="flex justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                  <Flower className="h-10 w-10 text-white" />
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center">
+                  <Flower className="h-8 w-8 text-white" />
                 </div>
               </div>
               
-              {/* Welcome Text */}
-              <div className="space-y-4">
-                <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-                  Welcome to Blossom
+              {/* Minimal Text */}
+              <div className="space-y-3">
+                <h1 className="text-3xl font-semibold text-gray-900 dark:text-white">
+                  Blossom
                 </h1>
-                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                  Start learning faster using our smart flashcards
+                <p className="text-gray-500 dark:text-gray-400">
+                  Smart flashcards
                 </p>
               </div>
               
-              {/* Modern Sign In Component */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border border-gray-100 dark:border-gray-700">
-                <div className="space-y-6">
-                  <div className="text-center">
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                      Sign in to start
-                    </h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Access your personalized learning experience
-                    </p>
-                  </div>
-                  
-                  <Button 
-                    onClick={() => window.location.href = '/handler/sign-in'}
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
-                  >
-                    Sign In
-                  </Button>
-                  
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Don't have an account?{' '}
-                      <button 
-                        onClick={() => window.location.href = '/handler/sign-up'}
-                        className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
-                      >
-                        Create one
-                      </button>
-                    </p>
-                  </div>
-                </div>
+              {/* Minimal Sign In */}
+              <div className="space-y-4">
+                <Button 
+                  onClick={() => window.location.href = '/handler/sign-in'}
+                  className="w-full h-12 bg-black dark:bg-white text-white dark:text-black font-medium rounded-2xl hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
+                >
+                  Sign In
+                </Button>
+                
+                <button 
+                  onClick={() => window.location.href = '/handler/sign-up'}
+                  className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                >
+                  Create account
+                </button>
               </div>
             </div>
           </div>
         ) : (
-          // Show deck management when user is authenticated
+          // Minimalistic deck management
           <>
-            <div className="mb-6">
+            <div className="mb-8">
               <div className="flex items-center justify-between">
-                <div>
-                  <h1 className="text-3xl font-bold mb-2">My Decks</h1>
-                  <p className="text-muted-foreground">
-                    Create and manage your flashcard decks
-                  </p>
-                </div>
+                <h1 className="text-2xl font-semibold">Decks</h1>
                 <div className="flex gap-2">
                   <Button
-                    variant="outline"
+                    variant="ghost"
+                    size="icon"
                     onClick={() => router.push('/teams')}
-                    className="flex items-center gap-2"
+                    className="h-10 w-10"
                   >
-                    <Users className="h-4 w-4" />
-                    Browse Teams
+                    <Users className="h-5 w-5" />
                   </Button>
                   {decks.length === 0 && (
                     <Button
-                      variant="outline"
+                      variant="ghost"
+                      size="icon"
                       onClick={() => router.push('/seed')}
-                      className="hidden sm:flex"
+                      className="h-10 w-10 hidden sm:flex"
                     >
-                      Add Demo Data
+                      <BookOpen className="h-5 w-5" />
                     </Button>
                   )}
                 </div>
               </div>
             </div>
 
-            <div className="mb-6">
+            <div className="mb-8">
               <SearchBar
-                placeholder="Search decks..."
+                placeholder="Search"
                 value={searchQuery}
                 onChange={setSearchQuery}
               />
@@ -246,16 +226,16 @@ export default function HomePage() {
             ) : filteredDecks.length === 0 ? (
               <EmptyState
                 icon="📚"
-                title={searchQuery ? 'No decks found' : 'No decks yet'}
+                title={searchQuery ? 'No results' : 'No decks'}
                 description={
                   searchQuery
-                    ? 'Try adjusting your search terms'
-                    : 'Create your first deck to get started with studying'
+                    ? 'Try different search terms'
+                    : 'Create your first deck'
                 }
                 action={
                   !searchQuery
                     ? {
-                        label: 'Create Deck',
+                        label: 'Create',
                         onClick: () => setIsCreateDialogOpen(true),
                       }
                     : undefined
@@ -284,40 +264,35 @@ export default function HomePage() {
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Create New Deck</DialogTitle>
-                  <DialogDescription>
-                    Create a new flashcard deck to start studying.
-                  </DialogDescription>
+                  <DialogTitle>New Deck</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium">Title</label>
                     <Input
-                      placeholder="Enter deck title"
+                      placeholder="Title"
                       value={newDeckTitle}
                       onChange={(e) => setNewDeckTitle(e.target.value)}
-                      className="mt-1"
+                      className="h-12"
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">Description (optional)</label>
                     <Textarea
-                      placeholder="Enter deck description"
+                      placeholder="Description (optional)"
                       value={newDeckDescription}
                       onChange={(e) => setNewDeckDescription(e.target.value)}
-                      className="mt-1"
+                      className="min-h-[80px]"
                     />
                   </div>
                 </div>
                 <DialogFooter>
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     onClick={() => setIsCreateDialogOpen(false)}
                   >
                     Cancel
                   </Button>
                   <Button onClick={handleCreateDeck} disabled={!newDeckTitle.trim()}>
-                    Create Deck
+                    Create
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -328,39 +303,34 @@ export default function HomePage() {
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Edit Deck</DialogTitle>
-                  <DialogDescription>
-                    Update your deck information.
-                  </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium">Title</label>
                     <Input
-                      placeholder="Enter deck title"
+                      placeholder="Title"
                       value={editTitle}
                       onChange={(e) => setEditTitle(e.target.value)}
-                      className="mt-1"
+                      className="h-12"
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">Description (optional)</label>
                     <Textarea
-                      placeholder="Enter deck description"
+                      placeholder="Description (optional)"
                       value={editDescription}
                       onChange={(e) => setEditDescription(e.target.value)}
-                      className="mt-1"
+                      className="min-h-[80px]"
                     />
                   </div>
                 </div>
                 <DialogFooter>
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     onClick={() => setEditingDeck(null)}
                   >
                     Cancel
                   </Button>
                   <Button onClick={handleEditDeck} disabled={!editTitle.trim()}>
-                    Save Changes
+                    Save
                   </Button>
                 </DialogFooter>
               </DialogContent>

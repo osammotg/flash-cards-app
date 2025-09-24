@@ -77,16 +77,15 @@ export function Flashcard({ card, onGrade, onNext, isComplete = false }: Flashca
     >
       <div className="flashcard-inner">
         {/* Front of card */}
-        <div className="flashcard-front bg-card border-2 border-border rounded-2xl shadow-lg">
-          <div className="p-6 w-full">
-            <div className="text-sm text-muted-foreground mb-2">Question</div>
+        <div className="flashcard-front bg-card border-2 border-border rounded-3xl shadow-lg">
+          <div className="p-8 w-full">
             <div className="text-lg leading-relaxed">{card.front}</div>
             {card.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1 mt-4">
+              <div className="flex flex-wrap gap-1 mt-6">
                 {card.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2 py-1 text-xs bg-secondary text-secondary-foreground rounded-md"
+                    className="px-3 py-1 text-xs bg-secondary text-secondary-foreground rounded-full"
                   >
                     {tag}
                   </span>
@@ -97,30 +96,29 @@ export function Flashcard({ card, onGrade, onNext, isComplete = false }: Flashca
         </div>
 
         {/* Back of card */}
-        <div className="flashcard-back bg-primary text-primary-foreground rounded-2xl shadow-lg">
-          <div className="p-6 w-full">
-            <div className="text-sm opacity-80 mb-2">Answer</div>
+        <div className="flashcard-back bg-primary text-primary-foreground rounded-3xl shadow-lg">
+          <div className="p-8 w-full">
             <div className="text-lg leading-relaxed">{card.back}</div>
           </div>
         </div>
       </div>
 
       {/* Controls */}
-      <div className="flex justify-center mt-6 space-x-4">
+      <div className="flex justify-center mt-8">
         <Button
-          variant="outline"
+          variant="ghost"
           onClick={handleFlip}
-          className="min-h-[44px] min-w-[44px]"
+          className="h-12 px-6 rounded-2xl"
         >
           {isFlipped ? (
             <>
               <RotateCcw className="mr-2 h-4 w-4" />
-              Show Question
+              Question
             </>
           ) : (
             <>
               <RotateCw className="mr-2 h-4 w-4" />
-              Show Answer
+              Answer
             </>
           )}
         </Button>
@@ -128,24 +126,20 @@ export function Flashcard({ card, onGrade, onNext, isComplete = false }: Flashca
 
       {/* Grade buttons - only show when answer is revealed */}
       {showAnswer && (
-        <div className="mt-6 mb-32 sm:mb-6">
-          <div className="text-center text-sm text-muted-foreground mb-4">
-            How well did you know this?
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-w-md mx-auto">
+        <div className="mt-8 mb-32 sm:mb-8">
+          <div className="grid grid-cols-3 gap-3 max-w-lg mx-auto">
             {gradeLabels.map(({ value, label, color }) => (
               <Button
                 key={value}
                 onClick={() => handleGrade(value as StudyGrade)}
-                className={`${color} text-white min-h-[44px] text-sm font-medium`}
+                className={`${color} text-white h-12 text-sm font-medium rounded-2xl`}
               >
-                <span className="hidden sm:inline">{value}: </span>
                 {label}
               </Button>
             ))}
           </div>
-          <div className="text-center text-xs text-muted-foreground mt-2">
-            Press 1-6 on keyboard or tap buttons
+          <div className="text-center text-xs text-muted-foreground mt-4">
+            Press 1-6 or tap buttons
           </div>
         </div>
       )}

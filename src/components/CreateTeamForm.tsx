@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useUser } from '@stackframe/stack';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -14,9 +15,25 @@ export function CreateTeamForm({ variant = "default" }: { variant?: "default" | 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
+  const user = useUser();
+  
+  // Check if user has premium subscription
+  const hasPremium = user?.clientMetadata?.subscriptionStatus === 'active';
 
   const handleCreateTeam = async () => {
     if (!name.trim()) return;
+    
+    // Check premium subscription
+    if (!hasPremium) {
+      toast({
+        title: 'Premium Required',
+        description: 'You need a premium subscription to create teams. Upgrade now!',
+        variant: 'destructive',
+      });
+      setIsOpen(false);
+      window.location.href = '/plans';
+      return;
+    }
     
     setIsLoading(true);
     try {

@@ -26,10 +26,10 @@ export function BottomNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex min-h-[44px] min-w-[44px] flex-col items-center justify-center space-y-1 rounded-lg px-3 py-2 text-xs font-medium transition-colors',
+                'flex min-h-[44px] min-w-[44px] flex-col items-center justify-center space-y-1 rounded-2xl px-4 py-2 text-xs font-medium transition-colors',
                 isActive
-                  ? 'text-primary'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'text-primary bg-primary/10'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
               )}
             >
               <Icon className="h-5 w-5" />
