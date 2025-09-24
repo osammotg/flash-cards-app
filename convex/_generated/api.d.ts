@@ -15,6 +15,8 @@ import type {
 } from "convex/server";
 import type * as cards from "../cards.js";
 import type * as decks from "../decks.js";
+import type * as publicTeams from "../publicTeams.js";
+import type * as teamDecks from "../teamDecks.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -27,6 +29,8 @@ import type * as decks from "../decks.js";
 declare const fullApi: ApiFromModules<{
   cards: typeof cards;
   decks: typeof decks;
+  publicTeams: typeof publicTeams;
+  teamDecks: typeof teamDecks;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

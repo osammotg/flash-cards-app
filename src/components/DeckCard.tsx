@@ -13,9 +13,11 @@ interface DeckCardProps {
   cardCount: number;
   onEdit?: (deck: Deck) => void;
   onDelete?: (deck: Deck) => void;
+  isTeamDeck?: boolean;
+  teamId?: string;
 }
 
-export function DeckCard({ deck, cardCount, onEdit, onDelete }: DeckCardProps) {
+export function DeckCard({ deck, cardCount, onEdit, onDelete, isTeamDeck = false, teamId }: DeckCardProps) {
   return (
     <Card className="group hover:shadow-md transition-shadow">
       <CardHeader className="pb-3">
@@ -68,7 +70,7 @@ export function DeckCard({ deck, cardCount, onEdit, onDelete }: DeckCardProps) {
       
       <CardFooter className="pt-0">
         <Button asChild className="w-full">
-          <Link href={`/deck/${deck._id}`}>
+          <Link href={isTeamDeck && teamId ? `/team/${teamId}/deck/${deck._id}` : `/deck/${deck._id}`}>
             <BookOpen className="mr-2 h-4 w-4" />
             View Cards
           </Link>

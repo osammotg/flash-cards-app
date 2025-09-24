@@ -19,7 +19,7 @@ import { useDecks } from '@/hooks/use-decks';
 import { useCards } from '@/hooks/use-cards';
 import { useDeckCardCounts } from '@/hooks/use-deck-card-counts';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, BookOpen, Flower } from 'lucide-react';
+import { Plus, BookOpen, Flower, Users } from 'lucide-react';
 import { Deck } from '@/lib/types';
 import { FullScreenLoader } from '@/components/Loader';
 
@@ -199,15 +199,25 @@ export default function HomePage() {
                     Create and manage your flashcard decks
                   </p>
                 </div>
-                {decks.length === 0 && (
+                <div className="flex gap-2">
                   <Button
                     variant="outline"
-                    onClick={() => router.push('/seed')}
-                    className="hidden sm:flex"
+                    onClick={() => router.push('/teams')}
+                    className="flex items-center gap-2"
                   >
-                    Add Demo Data
+                    <Users className="h-4 w-4" />
+                    Browse Teams
                   </Button>
-                )}
+                  {decks.length === 0 && (
+                    <Button
+                      variant="outline"
+                      onClick={() => router.push('/seed')}
+                      className="hidden sm:flex"
+                    >
+                      Add Demo Data
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
 
